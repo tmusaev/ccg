@@ -22,16 +22,22 @@ app.get("/dreams", function (request, response) {
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
 app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
+  if(accounts.get(request.query.username)==request.query.password) {
+    dreams.push(request.query.username);
+    response.sendStatus(200);
+  }
+  else
+    response.sendStatus(404);
 });
 
 // Simple in-memory store for now
 var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-  ];
+];
+  
+var accounts = new Map();
+accounts.set("Bob", 123);
+accounts.set("Tim", 456);
+accounts.set("Joe", 789);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {

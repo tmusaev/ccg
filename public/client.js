@@ -15,11 +15,17 @@ $(function() {
 
   $('form').submit(function(event) {
     event.preventDefault();
-    dream = $('input').val();
-    $.post('/dreams?' + $.param({dream: dream}), function() {
-      $('<li></li>').text(dream).appendTo('ul#dreams');
+    username = $('input[name^=username]').val();
+    password = $('input[name^=password]').val();
+    $.post('/dreams?' + $.param({username: username, password: password}), function() {
+      $('<li></li>').text(username).appendTo('ul#dreams');
       $('input').val('');
       $('input').focus();
+    }).fail(function(){ 
+  // Handle error here
+      console.log("invalid user/pass");
+      $('input[name^=username]').val('');
+      $('input[name^=password]').val('');
     });
   });
 
